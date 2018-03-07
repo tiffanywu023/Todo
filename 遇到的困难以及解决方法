@@ -1,0 +1,35 @@
+1.  在写切换done状态的时候 一开始写错方法 选择了写遍历子元素 太过麻烦 应该直接选父元素 然后选择相应的class 切换show状态(具体在2)
+
+
+2.  在思考做done状态切换按钮的时候 一开始把位置写错(
+    (1) 想过把unchecked按钮和checked按钮都放在html里面 用css调整位置 插入list内容 但是没办法实现事件委托
+    (比如把两个按钮的切换和list的父元素todo-cell一起绑定)
+    (2) 想过把unchecked按钮和list绑定在一起 然后通过改变unchecked按钮img的src来改变按钮成checked按钮，
+    但是发现没办法单独实现切换 总是造成先完成再取消(等于没有写)的情况
+    ) 导致非常难实现功能
+
+    解决方法是 把checked和unchecked按钮img都放在todo-cell里面 然后通过css调整隐藏 然后通过target.parentElement
+    来querySelector相对应的class来切换class的css
+
+
+3.  在做将鼠标移向不同的todo-cell时 删除按钮显现 移出范围 删除按钮消失
+    问题是只适用于加载完毕的todoList 新添加的todoList没有反应
+
+    解决方法是 将事件委托绑定在todo-cell的父元素todoListContent(在html中)而不是绑定在todo-cell上面
+
+
+4.  在做切换done状态的时候
+    问题是只适用于加载完毕的todoList 新添加的todoList没有反应
+
+    解决方法是 将事件委托绑定在todo-cell的父元素todoListContent(在html中)而不是绑定在todo-cell上面
+
+
+5.  5是对 3和4 遇到的一切问题和解决的补充
+    在将事件绑定在todoListContent上面之后
+    (1) 针对3 没有进行 if(target.classList.contains('todo-cell')){}的判断
+    导致移到空白处之后 也会第一行删除图标显现 而进行此判断之后 会自动判断这一行有没有添加的todo-cell再进行隐藏和显现
+    (2) 针对4 没有进行if(target.classList.contains('todoBox')){}的判断
+    导致对空白部分的点击 也会使格子勾选
+
+    4.5的新补充
+    为什么要查询contains 因为绑定功能的时候 整个todo-cell未必在页面中
